@@ -8,7 +8,12 @@ const generateToken = (user) => {
 exports.signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    const isUser = await User.findOne({ email });
+    const isUser = await User.findOne({
+      $or: [
+        { email: email },
+        { username: username }
+      ]
+    });
 
     if (isUser) {
       return res.status(409).json({ message: "User already exist" });
@@ -18,6 +23,7 @@ exports.signup = async (req, res) => {
     const token = generateToken(user);
     res.status(201).json({ message: "User created", token, user });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -38,6 +44,7 @@ exports.login = async (req, res) => {
     const token = generateToken(user);
     res.status(200).json({ message: "Login successful", token, user });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -54,6 +61,7 @@ exports.searchUsers = async (req, res) => {
     }).select("-password");
     res.json(users);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Error searching users" });
   }
 };

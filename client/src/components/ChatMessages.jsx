@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
@@ -6,6 +6,7 @@ const ChatMessages = ({ selectedChat }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [cookies] = useCookies(["accessToken"]);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -27,6 +28,14 @@ const ChatMessages = ({ selectedChat }) => {
 
     fetchMessages();
   }, [selectedChat, cookies]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({});
+  };
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedChat) return;
@@ -86,6 +95,7 @@ const ChatMessages = ({ selectedChat }) => {
               </div>
             </div>
           ))}
+        <div ref={messagesEndRef} />
       </div>
       {selectedChat && (
         <div className="message-input d-flex p-3 border-top">

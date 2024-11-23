@@ -18,7 +18,10 @@ const Signup = () => {
     setError("");
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/user/signup", formData);
+      const { data } = await axios.post(
+        "http://localhost:5000/api/user/signup",
+        formData
+      );
       setCookie("accessToken", data.token, { path: "/" });
       navigate("/");
     } catch (err) {
@@ -73,6 +76,12 @@ const Signup = () => {
           />
         </div>
         <button className="btn btn-primary w-100">Signup</button>
+        <p className="mt-3 text-center">
+          Already have an account?{" "}
+          <a href="/login" className="text-primary">
+            Login
+          </a>
+        </p>
       </form>
     </div>
   );
