@@ -95,3 +95,12 @@ button:hover {
     max-width: 80%; /* Make bubbles narrower on small screens */
   }
 }
+
+.dropdown-menu {
+  min-width: 150px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu .dropdown-item {
+  cursor: pointer;
+}

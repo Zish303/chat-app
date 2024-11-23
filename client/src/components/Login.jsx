@@ -19,6 +19,7 @@ const Login = () => {
         formData
       );
       setCookie("accessToken", data.token, { path: "/" });
+      setCookie("username", data.user.username, { path: "/" });
       navigate("/");
     } catch (err) {
       if (err.response) {

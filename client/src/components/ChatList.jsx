@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
@@ -6,7 +7,18 @@ const ChatList = ({ onChatSelect }) => {
   const [chats, setChats] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [cookies] = useCookies(["accessToken"]);
+  const [cookies] = useCookies();
+  const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleLogout = () => {
+    document.cookie = "accesToken=; Max-Age=0; path=/;";
+    navigate("/login");
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -15,7 +27,6 @@ const ChatList = ({ onChatSelect }) => {
           headers: { Authorization: `Bearer ${cookies.accessToken}` },
         });
         setChats(data);
-        console.log(chats);
       } catch (err) {
         console.error(
           "Error fetching chats:",
@@ -77,7 +88,42 @@ const ChatList = ({ onChatSelect }) => {
 
   return (
     <div className="sidebar p-3">
-      <h4 className="mb-4">Chat App</h4>
+      <div className="d-flex justify-content-between align-items-center">
+        <h4>Chat App</h4>
+        <div className="position-relative">
+          <img
+            src={`https://robohash.org/${cookies.username}.png`}
+            alt="Profile"
+            className="rounded-circle"
+            style={{
+              background: "white",
+              cursor: "pointer",
+              width: "40px",
+              height: "40px",
+            }}
+            onClick={toggleDropdown}
+          />
+          {dropdownOpen && (
+            <div
+              className="dropdown-menu show position-absolute"
+              style={{ right: 0 }}
+            >
+              {/* <button
+                className="dropdown-item"
+                onClick={() => navigate("/profile")}
+              >
+                View Profile
+              </button> */}
+              <button
+                className="dropdown-item text-danger"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
       <div className="p-3">
         <input
           type="text"
@@ -105,14 +151,24 @@ const ChatList = ({ onChatSelect }) => {
         chats.map((chat) => (
           <div
             key={chat._id}
-            className="chat-item p-3 border-bottom"
+            className="chat-item p-3 border-bottom d-flex align-items-center"
             onClick={() => onChatSelect(chat)}
             style={{ cursor: "pointer" }}
           >
-            <h6>
-              {chat.name || chat.participants.map((p) => p.username).join(", ")}
-            </h6>
-            <small>{lastMessage(chat) || "No messages yet"}</small>
+            <img
+              src={`https://robohash.org/${chat.participants[0]?.username || "default"}.png`}
+              alt="Profile"
+              className="rounded-circle me-3"
+              style={{ width: "40px", height: "40px", objectFit: "cover" }}
+            />
+
+            <div>
+              <h6>
+                {chat.name ||
+                  chat.participants.map((p) => p.username).join(", ")}
+              </h6>
+              <small>{lastMessage(chat) || "No messages yet"}</small>
+            </div>
           </div>
         ))}
     </div>
