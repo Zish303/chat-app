@@ -80,7 +80,7 @@ const ChatMessages = ({ selectedChat }) => {
               } mb-1`}
             >
               <div
-                className={`p-2 ${
+                className={`p-2 d-flex ${
                   message.sender._id !== selectedChat.participants[0]._id
                     ? "bubble-right"
                     : "bubble-left"
@@ -91,7 +91,12 @@ const ChatMessages = ({ selectedChat }) => {
                     ? "You"
                     : message.sender.username}
                 </small> */}
-                {message.content}
+                <p className="mx-2">{message.content}</p>
+                <small className="mt-auto">
+                  {new Date(message.timestamp).toLocaleTimeString(
+                    [], { hour: "2-digit", minute: "2-digit", hour12: false }
+                  )}
+                </small>
               </div>
             </div>
           ))}

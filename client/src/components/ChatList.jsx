@@ -133,7 +133,7 @@ const ChatList = ({ onChatSelect }) => {
           onChange={handleSearch}
         />
         {searchResults.length > 0 && (
-          <ul className="list-group mt-2">
+          <ul className="list-group">
             {searchResults.map((user) => (
               <li
                 key={user._id}
@@ -159,7 +159,7 @@ const ChatList = ({ onChatSelect }) => {
               src={`https://robohash.org/${chat.participants[0]?.username || "default"}.png`}
               alt="Profile"
               className="rounded-circle me-3"
-              style={{ width: "40px", height: "40px", objectFit: "cover" }}
+              style={{ background: "white", width: "40px", height: "40px", objectFit: "cover" }}
             />
 
             <div>
