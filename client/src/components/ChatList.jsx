@@ -52,17 +52,24 @@ const ChatList = ({ onChatSelect }) => {
     }
   };
 
+  const lastMessage = (chat) => {
+    if (chat.messages.length === 0) return undefined;
+    let message = chat.messages[chat.messages.length - 1].content;
+    if (!message) return "";
+    return message.length > 30 ? `${message.substring(0, 30)}...` : message;
+  };
+
   const handleUserClick = async (user) => {
     try {
-      const { data: newChat } = await axios.post(
+      const response = await axios.post(
         "http://localhost:5000/api/chat/",
         { userId: user._id },
         { headers: { Authorization: `Bearer ${cookies.accessToken}` } }
       );
-      setChats((prev) => [...prev, newChat]);
+      if (response.status === 201) setChats((prev) => [...prev, response.data]);
       setSearchResults([]);
       setSearchQuery("");
-      onChatSelect(newChat);
+      onChatSelect(response.data);
     } catch (err) {
       console.error("Error creating chat:", err.response?.data || err.message);
     }
@@ -105,7 +112,7 @@ const ChatList = ({ onChatSelect }) => {
             <h6>
               {chat.name || chat.participants.map((p) => p.username).join(", ")}
             </h6>
-            <small>{chat.messages[chat.messages.length-1].content || "No messages yet"}</small>
+            <small>{lastMessage(chat) || "No messages yet"}</small>
           </div>
         ))}
     </div>

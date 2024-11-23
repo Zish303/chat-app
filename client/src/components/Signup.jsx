@@ -4,7 +4,11 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 
 const Signup = () => {
-  const [formData, setFormData] = useState({ username: "", email: "", password: "" });
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState("");
   const [cookies, setCookie] = useCookies(["accessToken"]);
   const navigate = useNavigate();
@@ -21,7 +25,8 @@ const Signup = () => {
       if (err.response) {
         const status = err.response.status;
         if (status === 409) setError("User already exists.");
-        else if (status === 500) setError("Server error. Please try again later.");
+        else if (status === 500)
+          setError("Server error. Please try again later.");
       } else {
         setError("Network error. Please check your connection.");
       }
@@ -42,7 +47,9 @@ const Signup = () => {
           <input
             type="text"
             className="form-control"
-            onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, username: e.target.value })
+            }
           />
         </div>
         <div className="mb-3">
@@ -50,7 +57,9 @@ const Signup = () => {
           <input
             type="email"
             className="form-control"
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
           />
         </div>
         <div className="mb-3">
@@ -58,7 +67,9 @@ const Signup = () => {
           <input
             type="password"
             className="form-control"
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
           />
         </div>
         <button className="btn btn-primary w-100">Signup</button>

@@ -14,7 +14,10 @@ const Login = () => {
     setError("");
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/user/login", formData);
+      const { data } = await axios.post(
+        "http://localhost:5000/api/user/login",
+        formData
+      );
       setCookie("accessToken", data.token, { path: "/" });
       navigate("/");
     } catch (err) {
@@ -22,7 +25,8 @@ const Login = () => {
         const status = err.response.status;
         if (status === 401) setError("Invalid email or password.");
         else if (status === 404) setError("User not found.");
-        else if (status === 500) setError("Server error. Please try again later.");
+        else if (status === 500)
+          setError("Server error. Please try again later.");
       } else {
         setError("Network error. Please check your connection.");
       }
@@ -43,7 +47,9 @@ const Login = () => {
           <input
             type="email"
             className="form-control"
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
           />
         </div>
         <div className="mb-3">
@@ -51,7 +57,9 @@ const Login = () => {
           <input
             type="password"
             className="form-control"
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
           />
         </div>
         <button className="btn btn-primary w-100">Login</button>

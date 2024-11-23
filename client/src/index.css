@@ -40,6 +40,8 @@ button:hover {
   background-color: var(--secondary-color);
   color: #fff;
   height: 100vh;
+  min-width: 300px;
+  max-width: 300px;
 }
 
 .message-box {
@@ -47,4 +49,49 @@ button:hover {
   border-radius: 20px;
   padding: 10px 15px;
   margin-bottom: 10px;
+}
+
+.bubble-right {
+  background-color: var(--secondary-color); /* Button color for sender */
+  color: white;
+  border-radius: 15px 15px 0 15px;
+  max-width: 75%;
+  word-wrap: break-word;
+}
+
+.bubble-left {
+  background-color: var(--primary-color); /* Primary color for recipient */
+  border-radius: 15px 15px 15px 0;
+  max-width: 75%;
+  word-wrap: break-word;
+}
+
+.bubble-right p,
+.bubble-left p {
+  margin: 0;
+  white-space: pre-wrap; /* Keeps line breaks */
+}
+
+.bubble-left small,
+.bubble-right small {
+  font-size: 10px;
+}
+
+.bubble-right small {
+  color: white;
+}
+
+.bubble-right {
+  align-self: flex-end;
+}
+
+.bubble-left {
+  align-self: flex-start;
+}
+
+@media (max-width: 768px) {
+  .bubble-right,
+  .bubble-left {
+    max-width: 80%; /* Make bubbles narrower on small screens */
+  }
 }

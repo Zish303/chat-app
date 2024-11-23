@@ -14,13 +14,22 @@ exports.createChat = async (req, res) => {
       participants: { $all: [req.user._id, userId] },
     }).populate("participants", "-password");
 
-    // If no chat exists, create a new one
+    const removeCurrentUser = (chat) => {
+      chat.participants = chat.participants.filter(
+        (participant) => participant._id.toString() !== req.user._id.toString()
+      );
+    };
+
     if (!chat) {
       chat = await Chat.create({
         participants: [req.user._id, userId],
       });
       chat = await chat.populate("participants", "-password");
+      removeCurrentUser(chat);
+      res.status(201).json(chat);
     }
+
+    removeCurrentUser(chat);
 
     res.status(200).json(chat);
   } catch (error) {
@@ -43,7 +52,8 @@ exports.getChats = async (req, res) => {
       return {
         ...chat._doc,
         participants: chat.participants.filter(
-          (participant) => participant._id.toString() !== req.user._id.toString()
+          (participant) =>
+            participant._id.toString() !== req.user._id.toString()
         ),
       };
     });

@@ -31,6 +31,13 @@ const ChatMessages = ({ selectedChat }) => {
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedChat) return;
 
+    // socket.emit("send_message", {
+    //   chatId: selectedChat._id,
+    //   content: newMessage,
+    // });
+
+    // setNewMessage("");
+
     try {
       const { data } = await axios.post(
         `http://localhost:5000/api/chat/message`,
@@ -49,24 +56,36 @@ const ChatMessages = ({ selectedChat }) => {
 
   return (
     <div className="d-flex flex-column justify-content-between h-100">
-      <div className="p-3" style={{ overflowY: "scroll", flex: 1 }}>
-        {messages.length > 0 && 
-        messages.map((message) => (
-          <div
-            key={message._id}
-            className={`message-item ${message.sender._id === selectedChat.participants[0]._id ? "text-end" : "text-start"
-              } mb-3`}
-          >
+      <div
+        className="flex-grow-1 overflow-auto p-3"
+        style={{ overflowY: "scroll", flex: 1 }}
+      >
+        {messages.length > 0 &&
+          messages.map((message) => (
             <div
-              className={`p-2 rounded ${message.sender._id === selectedChat.participants[0]._id
-                  ? "bg-primary text-white"
-                  : "bg-light text-dark"
-                }`}
+              key={message._id}
+              className={`d-flex ${
+                message.sender._id !== selectedChat.participants[0]._id
+                  ? "justify-content-end"
+                  : "justify-content-start"
+              } mb-1`}
             >
-              {message.content}
+              <div
+                className={`p-2 ${
+                  message.sender._id !== selectedChat.participants[0]._id
+                    ? "bubble-right"
+                    : "bubble-left"
+                }`}
+              >
+                {/* <small className="d-block">
+                  {message.sender._id !== selectedChat.participants[0]._id
+                    ? "You"
+                    : message.sender.username}
+                </small> */}
+                {message.content}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
       {selectedChat && (
         <div className="message-input d-flex p-3 border-top">
