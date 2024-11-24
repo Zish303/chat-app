@@ -1,5 +1,5 @@
 const Chat = require("../models/chat.model");
-const User = require("../models/user.model");
+const { io, onlineUsers } = require("../socket/socket");
 
 // Create or Get Chat between Two Users
 exports.createChat = async (req, res) => {
@@ -94,6 +94,17 @@ exports.sendMessage = async (req, res) => {
     await chat.save();
 
     chat = await Chat.findById(chatId).populate("messages.sender", "username");
+
+    const recieverId = chat.participants
+      .filter((participant) => participant._id.toString() != req.user._id)[0]
+      ._id.toString();
+
+    const receiverSocketId = onlineUsers.get(recieverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("receive_message", chat.messages);
+    } else {
+      console.log("Receiver is offline");
+    }
 
     res.status(200).json(chat.messages);
   } catch (error) {

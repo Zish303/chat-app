@@ -124,10 +124,10 @@ const ChatList = ({ onChatSelect }) => {
           )}
         </div>
       </div>
-      <div className="p-3">
+      <div className="">
         <input
           type="text"
-          className="form-control"
+          className="form-control rounded-pill mt-3"
           placeholder="Search for users..."
           value={searchQuery}
           onChange={handleSearch}
@@ -156,10 +156,17 @@ const ChatList = ({ onChatSelect }) => {
             style={{ cursor: "pointer" }}
           >
             <img
-              src={`https://robohash.org/${chat.participants[0]?.username || "default"}.png`}
+              src={`https://robohash.org/${
+                chat.participants[0]?.username || "default"
+              }.png`}
               alt="Profile"
               className="rounded-circle me-3"
-              style={{ background: "white", width: "40px", height: "40px", objectFit: "cover" }}
+              style={{
+                background: "white",
+                width: "40px",
+                height: "40px",
+                objectFit: "cover",
+              }}
             />
 
             <div>

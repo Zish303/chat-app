@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { useSocket } from "../contexts/socketContext";
 
 const ChatMessages = ({ selectedChat }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [cookies] = useCookies(["accessToken"]);
+  const { socket } = useSocket();
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -32,6 +34,15 @@ const ChatMessages = ({ selectedChat }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("receive_message", (data) => {
+        setMessages(data);
+        socket.off("receiveMessage");
+      });
+    }
+  }, [socket]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({});
@@ -93,9 +104,11 @@ const ChatMessages = ({ selectedChat }) => {
                 </small> */}
                 <p className="mx-2">{message.content}</p>
                 <small className="mt-auto">
-                  {new Date(message.timestamp).toLocaleTimeString(
-                    [], { hour: "2-digit", minute: "2-digit", hour12: false }
-                  )}
+                  {new Date(message.timestamp).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })}
                 </small>
               </div>
             </div>
