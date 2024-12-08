@@ -33,7 +33,7 @@ exports.createChat = async (req, res) => {
 
     res.status(200).json(chat);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res
       .status(500)
       .json({ message: "Error creating chat", error: error.message });
@@ -49,6 +49,7 @@ exports.getChats = async (req, res) => {
       .populate("participants", "-password")
       .populate("messages.sender", "username");
 
+    // remove current user from participants list in each chat
     chats = chats.map((chat) => {
       return {
         ...chat._doc,
@@ -61,7 +62,7 @@ exports.getChats = async (req, res) => {
 
     res.status(200).json(chats);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res
       .status(500)
       .json({ message: "Error fetching chats", error: error.message });
@@ -108,7 +109,7 @@ exports.sendMessage = async (req, res) => {
 
     res.status(200).json(chat.messages);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res
       .status(500)
       .json({ message: "Error sending message", error: error.message });
@@ -131,7 +132,7 @@ exports.getMessages = async (req, res) => {
 
     res.status(200).json(chat.messages);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res
       .status(500)
       .json({ message: "Error fetching messages", error: error.message });

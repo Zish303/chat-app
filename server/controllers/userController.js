@@ -2,17 +2,16 @@ const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 
 const generateToken = (user) => {
-  return jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+  return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
 };
 
 exports.signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const isUser = await User.findOne({
-      $or: [
-        { email: email },
-        { username: username }
-      ]
+      $or: [{ email: email }, { username: username }],
     });
 
     if (isUser) {
@@ -23,7 +22,7 @@ exports.signup = async (req, res) => {
     const token = generateToken(user);
     res.status(201).json({ message: "User created", token, user });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -44,7 +43,7 @@ exports.login = async (req, res) => {
     const token = generateToken(user);
     res.status(200).json({ message: "Login successful", token, user });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -61,7 +60,7 @@ exports.searchUsers = async (req, res) => {
     }).select("-password");
     res.json(users);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).json({ message: "Error searching users" });
   }
 };

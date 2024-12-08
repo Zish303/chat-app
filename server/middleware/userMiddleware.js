@@ -13,6 +13,7 @@ exports.verify = async (req, res, next) => {
   }
 
   if (!token) {
+    console.log("Token not found");
     return res.status(401).json({ message: "Unauthorized" });
   }
 
@@ -21,6 +22,7 @@ exports.verify = async (req, res, next) => {
     req.user = await User.findById(decoded.id).select("-password");
     next();
   } catch (error) {
+    console.log("Invalid token");
     res.status(401).json({ message: "Invalid Token" });
   }
 };

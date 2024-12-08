@@ -41,7 +41,7 @@ const Login = () => {
         style={{ maxWidth: "400px" }}
         onSubmit={handleSubmit}
       >
-        <h4 className="mb-4">Login</h4>
+        <h4 className="mb-4 text-center">Login</h4>
         {error && <div className="alert alert-danger">{error}</div>}
         <div className="mb-3">
           <label>Email</label>
