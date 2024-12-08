@@ -4,10 +4,6 @@ import ChatMessages from "../components/ChatMessages";
 
 const Home = () => {
   const [selectedChat, setselectedChat] = useState(null);
-  const [messages] = useState([
-    { text: "Hi Alice!", isMine: true },
-    { text: "Hello!", isMine: false },
-  ]);
 
   return (
     <div className="d-flex vh-100">

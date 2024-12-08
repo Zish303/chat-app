@@ -10,7 +10,7 @@ const Signup = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const [cookies, setCookie] = useCookies(["accessToken"]);
+  const [, setCookie] = useCookies(["accessToken"]);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {

@@ -6,7 +6,7 @@ import axios from "axios";
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const [cookies, setCookie] = useCookies(["accessToken"]);
+  const [, setCookie] = useCookies(["accessToken"]);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
